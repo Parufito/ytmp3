@@ -13,14 +13,14 @@ services:
       - TELEGRAM_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: always
 
-#  nginx:
-#    container_name: nginx
-#    image: "nginx:stable"
-#    ports:
-#      - 8080:80
-#    volumes:
-#      - $(pwd)/music:/usr/src/app/music/podcast
-#    restart: always
+  nginx:
+    container_name: nginx
+    image: "nginx:stable"
+    ports:
+      - 8080:80
+    volumes:
+      - ./music:/usr/src/app/music/podcast
+    restart: always
 
 volumes:
   ytmp3:
