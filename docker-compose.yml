@@ -17,9 +17,9 @@ services:
     container_name: nginx
     image: "nginx:stable"
     ports:
-      - 8080:80
+      - 80:80
     volumes:
-      - ./music:/usr/src/app/music/podcast
+      - ./music/podcast:/usr/share/nginx/html
     restart: always
 
 volumes:

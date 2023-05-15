@@ -8,7 +8,7 @@
     </itunes:owner>
     <itunes:author>Parufito</itunes:author>
     <description>YAP Youtube as a podcast</description>
-    <itunes:image href="https://www.example.com/podcasts/dafnas-zebras/img/dafna-zebra-pod-logo.jpg"/>
+    <itunes:image href="http://192.168.1.109/logo.png"/>
     <language>ca-es</language>
     <link>https://www.parufito.info</link>
     <item>
