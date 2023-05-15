@@ -12,12 +12,10 @@
     <language>ca-es</language>
     <link>https://www.parufito.info</link>
     <item>
-      <title>Berto_Romero_-_El_Sentido_De_La_Birra_-_24</title>
+      <title>Title</title>
       <description>Desc</description>
       <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>
-      <enclosure url="http://192.168.1.109/Berto_Romero_-_El_Sentido_De_La_Birra_-_24.mp3"
-                 type="audio/mpeg" length="34216300"/>
-      <itunes:duration>30:00</itunes:duration>
+      <enclosure url="http://192.168.1.109/file.mp3" type="audio/mpeg"/>
       <guid isPermaLink="false">dzpodtop10</guid>
     </item>
   </channel>
