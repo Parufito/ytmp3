@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  ytmp3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ytmp3
+    image: "ytmp3"
+    volumes:
+      - ./music:/usr/src/app/music
+    environment:
+      - TELEGRAM_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    restart: always
+
+  nginx:
+    container_name: nginx
+    image: "nginx:stable"
+    ports:
+      - 80:80
+    volumes:
+      - ./music/podcast:/usr/share/nginx/html
+    restart: always
+
+volumes:
+  ytmp3:
+  nginx:
