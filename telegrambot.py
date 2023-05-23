@@ -7,6 +7,8 @@ import subprocess
 from telegram import ForceReply, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 
+from addfeed import add_rss_entry
+
 # Token del bot de Telegram
 token = os.environ.get('TELEGRAM_TOKEN')
 
@@ -74,6 +76,7 @@ async def yt_single(chat_id,context,url) -> None:
 
 async def yt_podcast(chat_id,context,url) -> None:
     await execute_script(chat_id, context, url, 'podcast.sh')
+    await add_rss_entry(url)
 
 async def execute_script(chat_id, context, url, script):
     cleaned_url = ''.join(url).strip("{}")
