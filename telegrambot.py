@@ -59,17 +59,17 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             pass
         case "single":
             path = 'music/single/%(title)s.%(ext)s'
-            result = await download.download_video(url, path)
-            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+            await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="fet!")
         case "playlist":
             path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
-            result = await download.download_video(url, path)
-            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+            await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="ok")
         case "podcast":
-            path = 'podcast/%(title)s.%(ext)s'
-            result = await download.download_video(url, path)
-            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
-            await exec(addfeed)
+            path = 'music/podcast/%(id)s.%(ext)s'
+            await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="molon")
+            addfeed.generate_rss()
 
 
 def main() -> None:
