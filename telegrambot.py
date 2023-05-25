@@ -25,10 +25,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
-    text = update.message.text
+    context.user_data['youtube_url'] = update.message.text
 
     # El missatge conté "youtube.com"
-    if re.search(r"youtube\.com", text, re.IGNORECASE):
+    if re.search(r"youtube\.com", update.message.text, re.IGNORECASE):
         """Sends a message with three inline buttons attached."""
         keyboard = [
             [
@@ -42,30 +42,28 @@ async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Què faig:", reply_markup=reply_markup)
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Parses the CallbackQuery and updates the message text."""
-    #query = update.callback_query
-
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
     await update.callback_query.answer()
-    #data = update.callback_query.data  # Dades rebudes en el callback
 
+    url = context.user_data.get('youtube_url')
     opcio = update.callback_query.data  # Separar les dades
-    url = update.message.text
+
     await update.callback_query.edit_message_text(text=f"Has escollit: {opcio}")
 
-    match opcio:
-        case "res":
-            pass
-        case "single":
-            path = 'music/single/%(title)s.%(ext)s'
-        case "playlist":
-            path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
-        case "podcast":
-            path = 'podcast/%(title)s.%(ext)s'
+    # Defineix el diccionari de mapeig d'opcions a rutes
+    path_mapping = {
+        "single": 'music/single/%(title)s.%(ext)s',
+        "playlist": 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s',
+        "podcast": 'podcast/%(title)s.%(ext)s',
+    }
 
-    result = await download.download_video(url,path)
-    await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+    # Verifica si l'opció és vàlida
+    if opcio in path_mapping:
+        path = path_mapping[opcio]
+        result = await download.download_video(url, path)
+
+        await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
 
 def main() -> None:
     """Start the bot."""
@@ -82,7 +80,6 @@ def main() -> None:
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
-
 
 if __name__ == "__main__":
     main()
