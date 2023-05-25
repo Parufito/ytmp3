@@ -62,7 +62,6 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             result = await download.download_video(url, path)
             await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
         case "playlist":
-            exec(addfeed)
             path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
             result = await download.download_video(url, path)
             await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
@@ -70,6 +69,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             path = 'podcast/%(title)s.%(ext)s'
             result = await download.download_video(url, path)
             await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+            await exec(addfeed)
 
 
 def main() -> None:
