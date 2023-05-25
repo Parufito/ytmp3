@@ -32,10 +32,10 @@ async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Sends a message with three inline buttons attached."""
         keyboard = [
             [
-                InlineKeyboardButton("Playlist", callback_data=f"playlist;{text}"),
-                InlineKeyboardButton("Single", callback_data=f"single;{text}"),
-                InlineKeyboardButton("Podcast", callback_data=f"podcast;{text}"),
-                InlineKeyboardButton("RES", callback_data=f"res;{text}"),
+                InlineKeyboardButton("Playlist", callback_data=f"playlist"),
+                InlineKeyboardButton("Single", callback_data=f"single"),
+                InlineKeyboardButton("Podcast", callback_data=f"podcast"),
+                InlineKeyboardButton("RES", callback_data=f"res"),
             ]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -50,7 +50,8 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.callback_query.answer()
     #data = update.callback_query.data  # Dades rebudes en el callback
 
-    opcio, url = update.callback_query.data.split(";")  # Separar les dades
+    opcio = update.callback_query.data  # Separar les dades
+    url = update.message.text
     await update.callback_query.edit_message_text(text=f"Has escollit: {opcio}")
 
     match opcio:
