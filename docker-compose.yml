@@ -11,6 +11,7 @@ services:
       - ./music:/usr/src/app/music
     environment:
       - TELEGRAM_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      - PODCAST_URL=http://<IP-or-hostname>/
     restart: always
 
   nginx:
