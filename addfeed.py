@@ -1,43 +1,44 @@
 import os
-import subprocess
-from datetime import datetime
-from feedgen.feed import FeedGenerator
+from mutagen.id3 import ID3
 
+directori = 'music/podcast'
+rss_file = 'music/podcast/rss.xml'
+podcast_url = os.environ.get('PODCAST_URL')
 
-def add_rss_entry(youtube_url):
-    # Executa yt-dlp per obtenir la informació del vídeo de YouTube
-    command = f"yt-dlp --restrict-filenames -j {youtube_url}"
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"Error en executar yt-dlp: {result.stderr}")
-        return
+rss = '<?xml version="1.0" encoding="UTF-8"?>\n'
+rss += '<rss version="2.0"\n'
+rss += '    xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">\n'
+rss += '  <channel>\n'
+rss += '    <title>ParufitoYtmp3 Podcast</title>\n'
+rss += '    <itunes:owner>\n'
+rss += '        <itunes:email>parufito@example.com</itunes:email>\n'
+rss += '    </itunes:owner>\n'
+rss += '    <itunes:author>Parufito</itunes:author>\n'
+rss += '    <description>YAP Youtube as a podcast</description>\n'
+rss += '    <itunes:image href="http://192.168.1.111/logo.png"/>\n'
+rss += '    <language>ca-es</language>\n'
+rss += '    <link>https://www.parufito.info</link>\n'
 
-    # Parseja la sortida de yt-dlp com a JSON
-    video_info = result.stdout.strip().split("\n")[-1]
+for filename in os.listdir(directori):
+    fitxer_path = os.path.join(directori, filename)
+    if os.path.isfile(fitxer_path) and filename.endswith('.mp3'):
+        tags = ID3(fitxer_path)
+        title = tags.get('TIT2', [''])[0]
+        artist = tags.get('TPE1', [''])[0]
+        album = tags.get('TALB', [''])[0]
+        file_url = f"{podcast_url}{filename}"
 
-    # Extreu les dades necessàries
-    video_data = json.loads(video_info)
-    video_title = video_data.get("title", "")
-    video_description = video_data.get("description", "")
-    video_pubdate = datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
-    video_file = video_data.get("id", "")
+        rss += '    <item>\n'
+        rss += f'      <title>{title}</title>\n'
+        rss += f'      <description>{artist} - {album}</description>\n'
+        rss += '      <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>\n'
+        rss += f'      <enclosure url="{file_url}" type="audio/mpeg"/>\n'
+        rss += f'      <guid isPermaLink="false">{filename}</guid>\n'
+        rss += '    </item>\n'
 
-    # Crea una nova entrada per al feed RSS
-    fg = FeedGenerator()
-    fg.load("music/podcast/rss.xml")  # Carrega el fitxer RSS existent
-    fe = fg.add_entry()
-    fe.title(video_title)
-    fe.description(video_description)
-    fe.pubDate(video_pubdate)
-    fe.enclosure(f"http://192.168.1.111/{video_file}.mp3", type="audio/mpeg")
-    fe.guid(video_file, isPermaLink=False)
+rss += '  </channel>\n'
+rss += '</rss>'
 
-    # Guarda el feed RSS actualitzat
-    fg.rss_file("music/podcast/rss.xml", pretty=True)
+with open(rss_file, 'w') as file:
+    file.write(rss)
 
-    print("Entrada afegida amb èxit al feed RSS.")
-
-
-# Exemple d'ús de la funció add_rss_entry
-youtube_url = "https://www.youtube.com/watch?v=YmQcV3OBxpk"
-add_rss_entry(youtube_url)

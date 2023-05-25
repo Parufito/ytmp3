@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # pylint: disable=unused-argument, wrong-import-position
 
-import os, re
+import os
+import re
+
 from telegram import ForceReply, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 
+import addfeed
 import download
 
 # Token del bot de Telegram
@@ -51,19 +54,23 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     await update.callback_query.edit_message_text(text=f"Has escollit: {opcio}")
 
-    # Defineix el diccionari de mapeig d'opcions a rutes
-    path_mapping = {
-        "single": 'music/single/%(title)s.%(ext)s',
-        "playlist": 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s',
-        "podcast": 'podcast/%(title)s.%(ext)s',
-    }
+    match opcio:
+        case "res":
+            pass
+        case "single":
+            path = 'music/single/%(title)s.%(ext)s'
+            result = await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+        case "playlist":
+            exec(addfeed)
+            path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
+            result = await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+        case "podcast":
+            path = 'podcast/%(title)s.%(ext)s'
+            result = await download.download_video(url, path)
+            await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
 
-    # Verifica si l'opció és vàlida
-    if opcio in path_mapping:
-        path = path_mapping[opcio]
-        result = await download.download_video(url, path)
-
-        await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
 
 def main() -> None:
     """Start the bot."""

@@ -19,11 +19,3 @@ def download_video(url, path):
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
-
-    # Comprovar si l'execució ha estat correcta
-    video_id = url.split('=')[-1]
-    file_path = f"podcast/{video_id}.mp3"
-    if os.path.exists(file_path):
-        return("Execució correcta!")
-    else:
-        return("Hi ha hagut un error en l'execució.")
