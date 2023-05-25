@@ -12,7 +12,6 @@ WORKDIR /usr/src/app
 
 # Copiar arxius del projecte
 COPY . .
-RUN chmod ugo+x scripts/*.sh
 
 # Executem el script en l'entrada de la imatge
 CMD ["python", "telegrambot.py"]
