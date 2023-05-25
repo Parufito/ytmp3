@@ -12,8 +12,11 @@ async def download_video(url, path):
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
+            'preferredquality': '192'
+            },
+            {
+                'key': 'FFmpegMetadata'
+            }],
         'addmetadata': True,
         'postprocessor_args': ['-c:v', 'mjpeg', '-vf', "crop='if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'"],
     }
