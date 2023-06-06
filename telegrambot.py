@@ -26,6 +26,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     """Send a message when the command /help is issued."""
     await update.message.reply_text("Help!")
 
+async def refresh_rss(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+    addfeed.generate_rss()
+
 async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     context.user_data['youtube_url'] = update.message.text
@@ -80,6 +84,7 @@ def main() -> None:
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("rss", refresh_rss))
     application.add_handler(CallbackQueryHandler(button))
 
     # on non command i.e message - echo the message on Telegram
