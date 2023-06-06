@@ -1,3 +1,4 @@
+import html
 import os
 from mutagen.id3 import ID3
 
@@ -27,8 +28,8 @@ def generate_rss():
             file_url = f"{podcast_url}{filename}"
 
             rss += '    <item>\n'
-            rss += f'      <title>{title}</title>\n'
-            rss += f'      <description>{artist} - {album}</description>\n'
+            rss += f'      <title>{html.escape(title)}</title>\n'
+            rss += f'      <description>{html.escape(artist)} - {html.escape(album)}</description>\n'
             rss += f'      <pubDate>{os.path.getmtime(fitxer_path)}</pubDate>\n'
             rss += f'      <enclosure url="{file_url}" type="audio/mpeg"/>\n'
             rss += f'      <guid isPermaLink="false">{filename}</guid>\n'
