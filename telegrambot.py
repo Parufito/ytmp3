@@ -70,7 +70,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await download.download_video(url, path)
             await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="ok")
         case "podcast":
-            path = 'music/podcast/%(id)s.%(ext)s'
+            path = 'music/podcast/%(title)s.%(ext)s'
             await download.download_video(url, path)
             await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="molon")
             addfeed.generate_rss()
