@@ -14,7 +14,7 @@ def generate_rss():
     rss += '  <channel>\n'
     rss += '    <title>Parufito Ytmp3 Podcast</title>\n'
     rss += '    <description>YAP Youtube as a podcast</description>\n'
-    rss += f'    <itunes:image href="http://{podcast_url}/logo.png"/>\n'
+    rss += f'    <itunes:image href="{podcast_url}logo.png"/>\n'
     rss += '    <language>ca-es</language>\n'
     rss += '    <link>https://www.parufito.info</link>\n'
 
