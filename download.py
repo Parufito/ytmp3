@@ -8,7 +8,6 @@ async def download_video(url, path):
         'outtmpl': path,
         'extractaudio': True,
         'audioformat': 'mp3',
-        'embedthumbnail': True,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -16,9 +15,14 @@ async def download_video(url, path):
             },
             {
                 'key': 'FFmpegMetadata'
+            },
+            {
+                'key': 'EmbedThumbnail'
             }],
         'addmetadata': True,
+        'writethumbnail': True,
         'postprocessor_args': ['-c:v', 'mjpeg', '-vf', "crop='if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'"],
+        'embedthumbnail': True,
     }
 
     success = False
