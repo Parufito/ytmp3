@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # pylint: disable=unused-argument, wrong-import-position
 
-import os, re
+import os
+import re
+
 from telegram import ForceReply, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
 
+import addfeed
 import download
 
 # Token del bot de Telegram
@@ -21,7 +24,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    await update.message.reply_text("Help!")
+    await update.message.reply_text("I need somebody!")
+
+async def refresh_rss(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+    addfeed.generate_rss()
+    await update.message.reply_html(
+        rf"Regenerant RSS"
+    )
 
 async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
@@ -51,19 +61,21 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     await update.callback_query.edit_message_text(text=f"Has escollit: {opcio}")
 
-    # Defineix el diccionari de mapeig d'opcions a rutes
-    path_mapping = {
-        "single": 'music/single/%(title)s.%(ext)s',
-        "playlist": 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s',
-        "podcast": 'podcast/%(title)s.%(ext)s',
-    }
+    match opcio:
+        case "res":
+            pass
+        case "single":
+            path = 'music/single/%(title)s.%(ext)s'
+            await download.download_video(url, path)
+        case "playlist":
+            path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
+            await download.download_video(url, path)
+        case "podcast":
+            path = 'music/podcast/%(title)s.%(ext)s'
+            await download.download_video(url, path)
+            addfeed.generate_rss()
 
-    # Verifica si l'opció és vàlida
-    if opcio in path_mapping:
-        path = path_mapping[opcio]
-        result = await download.download_video(url, path)
-
-        await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=result)
+    await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="Descarregat!")
 
 def main() -> None:
     """Start the bot."""
@@ -73,6 +85,7 @@ def main() -> None:
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("rss", refresh_rss))
     application.add_handler(CallbackQueryHandler(button))
 
     # on non command i.e message - echo the message on Telegram
