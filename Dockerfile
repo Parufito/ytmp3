@@ -5,7 +5,7 @@ FROM python:3-alpine
 RUN apk add --no-cache ffmpeg
 
 # Instal·lem les llibreries de Python
-RUN pip install yt-dlp python-telegram-bot feedgen
+RUN pip install yt-dlp python-telegram-bot mutagen
 
 # Copiem el script i els fitxers necessaris a la imatge
 WORKDIR /usr/src/app
