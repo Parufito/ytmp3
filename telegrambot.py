@@ -30,8 +30,7 @@ async def refresh_rss(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     """Send a message when the command /help is issued."""
     addfeed.generate_rss()
     await update.message.reply_html(
-        rf"Regenerant RSS",
-        reply_markup=ForceReply(selective=True),
+        rf"Regenerant RSS"
     )
 
 async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
