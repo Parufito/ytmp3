@@ -32,11 +32,15 @@ def generate_rss():
             album = tags.get('TALB', [''])[0]
             file_url = f"{podcast_url}{filename}"
             pubDate = timestamp_a_rfc822(os.path.getmtime(fitxer_path))
+            duracio_frames = tags.get('TLEN', [])[0]
+            duracio_segons = int(duracio_frames) / 1000 if duracio_frames else None
 
+            
             rss += '    <item>\n'
             rss += f'      <title>{html.escape(title)}</title>\n'
             rss += f'      <description>{html.escape(artist)} - {html.escape(album)}</description>\n'
             rss += f'      <pubDate>{pubDate}</pubDate>\n'
+            rss += f'      <duration>{int(duracio_segons)}</duration>\n'
             rss += f'      <enclosure url="{file_url}" type="audio/mpeg"/>\n'
             rss += f'      <guid isPermaLink="false">{filename}</guid>\n'
             rss += '    </item>\n'
