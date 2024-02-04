@@ -1,11 +1,16 @@
 import html
 import os
 from mutagen.id3 import ID3
+from datetime import datetime
+import email.utils
 
 directori = 'music/podcast'
 rss_file = 'music/podcast/rss.xml'
 podcast_url = os.environ.get('PODCAST_URL')
 
+def timestamp_a_rfc822(timestamp):
+    data_dt = datetime.fromtimestamp(timestamp)
+    return email.utils.format_datetime(data_dt)
 
 def generate_rss():
     rss = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -26,11 +31,12 @@ def generate_rss():
             artist = tags.get('TPE1', [''])[0]
             album = tags.get('TALB', [''])[0]
             file_url = f"{podcast_url}{filename}"
+            pubDate = timestamp_a_rfc822(os.path.getmtime(fitxer_path))
 
             rss += '    <item>\n'
             rss += f'      <title>{html.escape(title)}</title>\n'
             rss += f'      <description>{html.escape(artist)} - {html.escape(album)}</description>\n'
-            rss += f'      <pubDate>{os.path.getmtime(fitxer_path)}</pubDate>\n'
+            rss += f'      <pubDate>{pubDate}</pubDate>\n'
             rss += f'      <enclosure url="{file_url}" type="audio/mpeg"/>\n'
             rss += f'      <guid isPermaLink="false">{filename}</guid>\n'
             rss += '    </item>\n'
