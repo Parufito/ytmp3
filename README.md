@@ -35,7 +35,7 @@ En tots els casos
 - Les converteix a MP3
 - Omple el ID3 tag
 - Afegeix el thumbnail, en fa crop perque sigui quadrat i l'afegeix al mp3 [no m'està funcionant sempre]
-la comanda */rss* permet regenerar el rss en cas que hi hagi hagut algun problema
+- la comanda */rss* permet regenerar el rss en cas que hi hagi hagut algun problema
 
 #### Single
 - Guarda a la carpeta /music/single amb l'estructura ``music/single/%(title)s.%(ext)s``
@@ -47,8 +47,7 @@ la comanda */rss* permet regenerar el rss en cas que hi hagi hagut algun problem
 
  
 ### ToDo
-- Repassar la generació de thumbnails
-- Millorar l'estructura del rss.xml generat
-- Afegir una creation date als podcast per saber quan me'ls he descarregat i que es vegin "en ordre" des de la app de podcasts
-- Opció per esborrar fitxers
+- Els thumbnails estan incrustats al mp3. Per la música va bé, però per a generar el RSS de podcasts no. Buscar alternativa
+- Opció per esborrar fitxers. Mirar de fer una app interna al bot en html
+- Crear un fitxer .env per a les variables d'entorn
 
