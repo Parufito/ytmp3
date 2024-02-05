@@ -13,5 +13,7 @@ WORKDIR /usr/src/app
 # Copiar arxius del projecte
 COPY . .
 
+USER 1000:1000
+
 # Executem el script en l'entrada de la imatge
 CMD ["python", "telegrambot.py"]
