@@ -34,6 +34,6 @@ async def download_video(url, path):
         print(f"Error en descarregar el vídeo: {str(e)}")
 
     if success:
-        return "La descàrrega s'ha completat amb èxit."
+        return "Descàrrega completada"
     else:
-        return "Hi ha hagut un error en la descàrrega del vídeo."
+        return "Error descarregant el vídeo."

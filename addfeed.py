@@ -30,20 +30,17 @@ def generate_rss():
         if os.path.isfile(fitxer_path) and filename.endswith('.mp3'):
             tags = ID3(fitxer_path)
             title = tags.get('TIT2', [''])[0]
-            #artist = tags.get('TPE1', [''])[0]
-            #album = tags.get('TALB', [''])[0]
             synopsis = tags.get('TXXX:synopsis', [''])[0]
             file_url = f"{podcast_url}{filename}"
             pubDate = timestamp_a_rfc822(os.path.getmtime(fitxer_path))
             duration_in_seconds = int((MP3(fitxer_path)).info.length)
 
-            
+
             rss += '    <item>\n'
             rss += f'      <title>{html.escape(title)}</title>\n'
-            #rss += f'      <description>{html.escape(artist)} - {html.escape(album)}</description>\n'
             rss += f'      <description>{html.escape(synopsis)}</description>\n'
             rss += f'      <pubDate>{pubDate}</pubDate>\n'
-            rss += f'      <duration>{int(duration_in_seconds)}</duration>\n'
+            rss += f'      <itunes:duration>{int(duration_in_seconds)}</itunes:duration>\n'
             rss += f'      <enclosure url="{file_url}" type="audio/mpeg"/>\n'
             rss += f'      <guid isPermaLink="false">{filename}</guid>\n'
             rss += '    </item>\n'
@@ -53,3 +50,5 @@ def generate_rss():
 
     with open(rss_file, 'w') as file:
         file.write(rss)
+
+    return "RSS actualitzat"
