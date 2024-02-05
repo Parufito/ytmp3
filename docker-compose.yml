@@ -9,9 +9,8 @@ services:
     image: "ytmp3"
     volumes:
       - ./music:/usr/src/app/music
-    environment:
-      - TELEGRAM_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      - PODCAST_URL=http://<IP-or-hostname>/
+    env_file:
+      - .env.ytmp3
     restart: always
 
   nginx:

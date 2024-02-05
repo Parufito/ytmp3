@@ -28,9 +28,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def refresh_rss(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    addfeed.generate_rss()
+    result = addfeed.generate_rss()
     await update.message.reply_html(
-        rf"Regenerant RSS"
+        rf"{result}"
     )
 
 async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -45,7 +45,7 @@ async def youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 InlineKeyboardButton("Playlist", callback_data=f"playlist"),
                 InlineKeyboardButton("Single", callback_data=f"single"),
                 InlineKeyboardButton("Podcast", callback_data=f"podcast"),
-                InlineKeyboardButton("RES", callback_data=f"res"),
+                InlineKeyboardButton("🚫", callback_data=f"res"),
             ]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -66,16 +66,16 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             pass
         case "single":
             path = 'music/single/%(title)s.%(ext)s'
-            await download.download_video(url, path)
+            result = await download.download_video(url, path)
         case "playlist":
             path = 'music/%(artist)s/%(album)s/%(playlist_index)s - %(title)s.%(ext)s'
-            await download.download_video(url, path)
+            result = await download.download_video(url, path)
         case "podcast":
             path = 'music/podcast/%(title)s.%(ext)s'
-            await download.download_video(url, path)
+            result = await download.download_video(url, path)
             addfeed.generate_rss()
 
-    await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text="Descarregat!")
+    await context.bot.send_message(chat_id=update.callback_query.message.chat_id, text=f"{result}")
 
 def main() -> None:
     """Start the bot."""
